@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"os/user"
 	// "strconv"
 
 	"github.com/gin-gonic/gin"

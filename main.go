@@ -82,7 +82,19 @@ func getUser(c *gin.Context) {
 }
 
 func getUsers(c *gin.Context) {
-	return
+	var users []Users
+	var _users []UserSchema
+
+	db.Find(&users)
+	if len(users) <= 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusUnauthorized, "data": "User Not Found!"})
+		return
+	}
+
+	for _, user := range users {
+		_users = append(_users, UserSchema{ID: user.ID, Email: user.Email, Phone: user.Phone, Password: user.Password})
+	}
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": _users})
 }
 
 func updateUser(c *gin.Context) {

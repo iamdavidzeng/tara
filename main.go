@@ -1,12 +1,10 @@
 package main
 
 import (
-	"net/http"
-	// "strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"net/http"
 )
 
 var db *gorm.DB
@@ -63,7 +61,10 @@ func main() {
 }
 
 func createUser(c *gin.Context) {
-	return
+	user := Users{Email: c.PostForm("email"), Phone: c.PostForm("phone"), Password: c.PostForm("password")}
+	db.Create(&user)
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": "Create successfully!"})
 }
 
 func getUser(c *gin.Context) {
@@ -112,5 +113,15 @@ func updateUser(c *gin.Context) {
 }
 
 func deleteUser(c *gin.Context) {
-	return
+	var user Users
+	userID := c.Param("id")
+
+	db.First(&user, userID)
+	if user.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "data": "User Not Found!"})
+		return
+	}
+
+	db.Delete(&user)
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": "Delete successfully!"})
 }

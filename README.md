@@ -15,10 +15,9 @@ go run main.go
 curl -XGET http://localhost:8080/
 ```
 ### Users API
-> Use Postman temporarily
 ```
 # create user
-curl -X POST localhost:8080/api/v1/users/
+curl -XPOST localhost:8080/api/v1/users/ -H 'Content-Type: application/json' -d '{"email": "a@tara.com", "phone": "123456", "password": "root"}' 
 
 # get all users
 curl -X GET localhost:8080/api/v1/users/
@@ -27,7 +26,7 @@ curl -X GET localhost:8080/api/v1/users/
 curl -X GET localhost:8080/api/v1/users/1
 
 # update user
-curl -X POST localhost:8080/api/v1/users/1
+curl -X POST localhost:8080/api/v1/users/1 -H 'Content-Type: application/json' -d '{"email": "ab@tara.com"}'
 
 # delete user
 curl -XDELETE localhost:8080/api/v1/users/1

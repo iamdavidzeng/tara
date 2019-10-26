@@ -61,8 +61,11 @@ func main() {
 }
 
 func createUser(c *gin.Context) {
-	user := Users{Email: c.PostForm("email"), Phone: c.PostForm("phone"), Password: c.PostForm("password")}
-	db.Create(&user)
+	var user UserSchema
+	c.BindJSON(&user)
+
+	_user := Users{Email: user.Email, Phone: user.Phone, Password: user.Password}
+	db.Create(&_user)
 
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": "Create successfully!"})
 }
@@ -108,7 +111,10 @@ func updateUser(c *gin.Context) {
 		return
 	}
 
-	db.Model(&user).Update("email", c.PostForm("email"))
+	var userData UserSchema
+	c.BindJSON(&userData)
+
+	db.Model(&user).Update("email", userData.Email)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": "Update successfully!"})
 }
 

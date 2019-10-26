@@ -5,6 +5,10 @@ Use Go build RESTful API to call
 1. [Gin Web Framework](https://gin-gonic.com/docs/quickstart/)
 2. [GORM](https://gorm.io/docs/index.html)
 
+```
+CREATE DATABASE IF NOT EXISTS demo DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+```
+
 ## API Examples
 ### run server locally
 ```

@@ -2,18 +2,18 @@ package main
 
 import (
 	"fmt"
-	"tara/routes"
 	"tara/dependencies"
+	"tara/routes"
 )
 
 func main() {
 
 	if err := dependencies.InitConfig(); err != nil {
-		fmt.Println("Initiate config failed.")
+		fmt.Printf("Initiate config failed: %v\n", err)
 	}
 	db, err := dependencies.InitDB()
 	if err != nil {
-		fmt.Println("Connect to database failed.")
+		fmt.Printf("Connect to database failed: %v\n", err)
 		return
 	}
 

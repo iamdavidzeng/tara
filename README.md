@@ -45,4 +45,4 @@ before run docker image, you need to start you mysql client, then run this docke
 ```
 docker run -d -p 8080:8080 -e DB_SERVER=host.docker.internal --name tara tara:$(git rev-parse HEAD)
 ```
-default mysql config assign as config.yaml, and you are able to inject environment variables by declare `-e DB_USER=root -e DB_PASS=password` in command above.
+set `DB_SERVER=host.docker.internal` allows docker container access to call mysql, otherwise docker container can't find mysql client, default mysql config assign as config.yaml, and you are able to inject environment variables by declare `-e DB_USER=root -e DB_PASS=password` in command above.

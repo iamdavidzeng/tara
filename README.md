@@ -41,7 +41,7 @@ You can build docker image by run:
 ```
 make build
 ```
-before run docker image, you need to start you mysql client, then run this docker by run:
+before run docker image, you need to start you mysql client, then run this docker image by:
 ```
 docker run -d -p 8080:8080 -e DB_SERVER=host.docker.internal --name tara tara:$(git rev-parse HEAD)
 ```

@@ -48,13 +48,13 @@ workflows:
   do_it_all:
     jobs:
       - test
-      - build_approval
+      - build_approval:
           type: approval
           requires:
             - test
-      - build_images
+      - build_images:
           requires:
             - build_approval
-      - push_images
+      - push_images:
           requires:
             - build_images

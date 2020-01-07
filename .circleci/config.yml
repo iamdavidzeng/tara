@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           name: run tests
-          command:
+          command: |
             make test
   
   build:
@@ -20,7 +20,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: build docker images
-          command:
+          command: |
             make build docker-save
       - persist_to_workspace:
           root: docker-images
@@ -37,7 +37,7 @@ jobs:
           at: docker-images
       - run:
           name: push_images
-          command:
+          command: |
             make docker-login
             make docker-load
             make docker-tag

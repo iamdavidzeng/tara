@@ -35,3 +35,14 @@ curl -X POST localhost:8080/api/v1/users/1 -H 'Content-Type: application/json' -
 # delete user
 curl -XDELETE localhost:8080/api/v1/users/1
 ```
+
+## Docker
+You can build docker image by run:
+```
+make build
+```
+before run docker image, you need to start you mysql client, then run this docker image by:
+```
+docker run -d -p 8080:8080 -e DB_SERVER=host.docker.internal --name tara tara:$(git rev-parse HEAD)
+```
+set `DB_SERVER=host.docker.internal` allows docker container access to call mysql, otherwise docker container can't find mysql client, default mysql config assign as config.yaml, and you are able to inject environment variables by declare `-e DB_USER=root -e DB_PASS=password` in command above.

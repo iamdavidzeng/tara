@@ -1,5 +1,4 @@
 
-
 ifdef CIRCLE_SHA1
 TAG ?= $(CIRCLE_SHA1)
 else
@@ -8,7 +7,6 @@ endif
 
 PROJECT_NAME ?= tara
 REMOTE_DOCKER_HOST ?= zengzhiyuan
-
 
 
 run:
@@ -37,3 +35,6 @@ docker-tag:
 
 push-images:
 	docker push $(REMOTE_DOCKER_HOST)/$(PROJECT_NAME):$(TAG) 
+
+pull-images:
+	docker pull $(REMOTE_DOCKER_HOST)/$(PROJECT_NAME):$(TAG)

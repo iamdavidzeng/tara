@@ -1,0 +1,60 @@
+version: 2.1
+description: "Circleci to support CI/CD for tara."
+
+jobs:
+  test:
+    docker:
+      - image: circleci/golang:1.12
+    steps:
+      - checkout
+      - run:
+          name: run tests
+          command: |
+            make test
+  
+  build:
+    docker: 
+      - image: circleci/golang:1.12
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: build docker images
+          command: |
+            make build docker-save
+      - persist_to_workspace:
+          root: docker-images
+          paths:
+            - docker_images.tar
+
+  push:
+    docker:
+      - image: circleci/golang:1.12
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: docker-images
+      - run:
+          name: push_images
+          command: |
+            make docker-login
+            make docker-load
+            make docker-tag
+            make push-images
+
+workflows:
+  version: 2.1
+  do_it_all:
+    jobs:
+      - test
+      - build_approval:
+          type: approval
+          requires:
+            - test
+      - build:
+          requires:
+            - build_approval
+      - push:
+          requires:
+            - build

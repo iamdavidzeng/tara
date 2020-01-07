@@ -57,4 +57,4 @@ workflows:
             - build_approval
       - push:
           requires:
-            - build_images
+            - build

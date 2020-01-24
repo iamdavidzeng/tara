@@ -9,6 +9,7 @@ import (
 
 type Config struct {
 	DBURI string `yaml:"DBURI"`
+	MONGO_URI string `yaml:"MONGO_URI"`
 }
 
 var config *Config

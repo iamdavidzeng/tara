@@ -1,10 +1,16 @@
 package schemas
 
-import "time"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type PostSchema struct {
-	UserID    int       `json:"user_id"`
-	Title     string    `json:"title"`
-	Content   string    `json:"content"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        primitive.ObjectID `json:"id"`
+	UserID    int                `json:"user_id"`
+	Title     string             `json:"title"`
+	Content   string             `json:"content"`
+	Published bool               `json:"published"`
+	UpdatedAt time.Time          `json:"updated_at"`
 }

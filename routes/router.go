@@ -26,7 +26,7 @@ func InitRoute() *gin.Engine {
 	postAPI := router.Group("/api/v1/posts")
 	{
 		postAPI.GET("/", services.GetPosts)
-		postAPI.GET("/:userId", services.GetPost)
+		postAPI.GET("/:id", services.GetPost)
 		postAPI.POST("/", services.CreatePost)
 		postAPI.POST("/:id", services.UpdatePost)
 		postAPI.DELETE("/:id", services.DeletePost)

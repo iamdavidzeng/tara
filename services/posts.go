@@ -30,7 +30,7 @@ func GetPost(ctx *gin.Context) {
 	}
 
 	if post.Published != false {
-		postSchema := schemas.PostSchema{ID: post.ID, Title: post.Title, Content: post.Title, UpdatedAt: post.UpdatedAt, Published: post.Published}
+		postSchema := schemas.PostSchema{ID: post.ID, Title: post.Title, Content: post.Content, UpdatedAt: post.UpdatedAt, Published: post.Published}
 		ctx.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": postSchema})
 	} else {
 		ctx.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "data": "Post Not Found."})

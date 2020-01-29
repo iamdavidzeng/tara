@@ -46,7 +46,7 @@ func GetPosts(ctx *gin.Context) {
 	findOptions.SetLimit(10)
 
 	var postSchemas []schemas.PostSchema
-	cur, err := collection.Find(mongoCtx, bson.M{"published": bson.M{"$eq": true}}, findOptions)
+	cur, err := collection.Find(mongoCtx, bson.M{}, findOptions)
 	if err != nil {
 		log.Fatal(err)
 	}

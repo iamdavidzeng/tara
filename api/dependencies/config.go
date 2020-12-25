@@ -1,14 +1,15 @@
 package dependencies
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"regexp"
+
+	"gopkg.in/yaml.v2"
 )
 
 type Config struct {
-	DBURI string `yaml:"DBURI"`
+	DBURI     string `yaml:"DBURI"`
 	MONGO_URI string `yaml:"MONGO_URI"`
 }
 

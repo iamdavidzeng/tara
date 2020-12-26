@@ -3,6 +3,7 @@ package config
 import (
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
 
 	"gopkg.in/yaml.v2"
@@ -35,7 +36,8 @@ func replaceEnvInConfig(body []byte) []byte {
 
 // InitConfig 初始化全局配置
 func InitConfig() error {
-	result, err := ioutil.ReadFile("config.yaml")
+	configPath, _ := filepath.Abs("configs/config.yaml")
+	result, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		return err
 	}

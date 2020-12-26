@@ -6,13 +6,13 @@ ADD . /build/
 
 WORKDIR /build
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main cmd
 
 #
 
 FROM scratch
 
-COPY config.yaml /app/
+COPY config.yaml /app/configs/
 
 COPY --from=builder /build/main /app/
 

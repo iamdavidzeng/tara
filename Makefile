@@ -10,7 +10,7 @@ REMOTE_DOCKER_HOST ?= zengzhiyuan
 
 
 run:
-	go run cmd/main.go
+	go run main.go
 
 test:
 	go test -v -race ./...

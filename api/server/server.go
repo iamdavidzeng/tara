@@ -32,6 +32,5 @@ func Run() {
 
 	router := routes.InitRoute()
 
-	fmt.Printf("Server is listening on http://localhost:8080")
 	router.Run()
 }

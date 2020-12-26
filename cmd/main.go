@@ -3,31 +3,32 @@ package main
 import (
 	"context"
 	"fmt"
-	"tara/dependencies"
-	"tara/routes"
+	"tara/api/config"
+	"tara/api/db"
+	"tara/api/routes"
 )
 
 func main() {
 
 	// Init config
-	if err := dependencies.InitConfig(); err != nil {
+	if err := config.InitConfig(); err != nil {
 		fmt.Printf("Initiate config failed: %v\n", err)
 	}
 
 	// Init mysql connection
-	db, err := dependencies.InitDB()
+	mySQLClient, err := db.InitDB()
 	if err != nil {
 		fmt.Printf("Fail to onnect database: %v\n", err)
 		return
 	}
-	defer db.Close()
+	defer mySQLClient.Close()
 
 	// Init mongodb connection
-	client, err := dependencies.InitMongo()
+	mongoClient, err := db.InitMongo()
 	if err != nil {
 		fmt.Printf("Fail to connect mongodb: %v\n", err)
 	}
-	defer client.Disconnect(context.TODO())
+	defer mongoClient.Disconnect(context.TODO())
 
 	router := routes.InitRoute()
 

@@ -1,15 +1,17 @@
-package dependencies
+package db
 
 import (
+	"tara/api/config"
+	"tara/api/models"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"tara/models"
 )
 
 var DB *gorm.DB
 
 func InitDB() (*gorm.DB, error) {
-	db, err := gorm.Open("mysql", config.DBURI)
+	db, err := gorm.Open("mysql", config.Cfg.DBURI)
 	if err != nil {
 		return nil, err
 	}

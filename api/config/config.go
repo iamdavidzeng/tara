@@ -1,18 +1,22 @@
-package dependencies
+package config
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
+
+	"gopkg.in/yaml.v2"
 )
 
+// Config 申明全局配置类型
 type Config struct {
-	DBURI string `yaml:"DBURI"`
-	MONGO_URI string `yaml:"MONGO_URI"`
+	DBURI    string `yaml:"DBURI"`
+	MongoURI string `yaml:"MONGO_URI"`
 }
 
-var config *Config
+// Cfg 全局配置
+var Cfg *Config
 
 func replaceEnvInConfig(body []byte) []byte {
 	search := regexp.MustCompile(`\$\{([^}:]+):?([^}]+)?\}`)
@@ -30,21 +34,19 @@ func replaceEnvInConfig(body []byte) []byte {
 	return replacedBody
 }
 
+// InitConfig 初始化全局配置
 func InitConfig() error {
-	result, err := ioutil.ReadFile("config.yaml")
+	configPath, _ := filepath.Abs("configs/config.yaml")
+	result, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		return err
 	}
 
 	confContent := replaceEnvInConfig(result)
 
-	if err := yaml.Unmarshal(confContent, &config); err != nil {
+	if err := yaml.Unmarshal(confContent, &Cfg); err != nil {
 		return err
 	}
 
 	return nil
-}
-
-func GetConfig() *Config {
-	return config
 }

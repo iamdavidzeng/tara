@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"tara/dependencies"
-	"tara/models"
-	"tara/schemas"
+	"tara/api/db"
+	"tara/api/models"
+	"tara/api/schemas"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +23,7 @@ func GetPost(ctx *gin.Context) {
 	objectID, _ := primitive.ObjectIDFromHex(docID)
 
 	mongoCtx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	collection := dependencies.Client.Database("demo").Collection("posts")
+	collection := db.Client.Database("demo").Collection("posts")
 
 	if err := collection.FindOne(mongoCtx, bson.M{"_id": objectID}).Decode(&post); err != nil {
 		log.Fatal(err)
@@ -39,7 +39,7 @@ func GetPost(ctx *gin.Context) {
 
 func GetPosts(ctx *gin.Context) {
 	mongoCtx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	collection := dependencies.Client.Database("demo").Collection("posts")
+	collection := db.Client.Database("demo").Collection("posts")
 
 	// Find many posts
 	findOptions := options.Find()
@@ -74,7 +74,7 @@ func CreatePost(ctx *gin.Context) {
 	initialPost := models.Posts{Title: post.Title, Content: post.Content, UserID: post.UserID, CreatedAt: time.Now(), UpdatedAt: time.Now()}
 
 	mongoCtx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	collection := dependencies.Client.Database("demo").Collection("posts")
+	collection := db.Client.Database("demo").Collection("posts")
 
 	// Insert post to mongodb
 	if _, err := collection.InsertOne(mongoCtx, initialPost); err != nil {
@@ -92,7 +92,7 @@ func UpdatePost(ctx *gin.Context) {
 	ctx.BindJSON(&post)
 
 	mongoCtx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	collection := dependencies.Client.Database("demo").Collection("posts")
+	collection := db.Client.Database("demo").Collection("posts")
 
 	filter := bson.M{"_id": bson.M{"$eq": objectID}}
 	updateOptions := bson.M{"updated_at": time.Now()}
@@ -120,7 +120,7 @@ func DeletePost(ctx *gin.Context) {
 	objectID, _ := primitive.ObjectIDFromHex(docID)
 
 	mongoCtx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	collection := dependencies.Client.Database("demo").Collection("posts")
+	collection := db.Client.Database("demo").Collection("posts")
 
 	result, err := collection.DeleteOne(mongoCtx, bson.M{"_id": objectID})
 	if err != nil {

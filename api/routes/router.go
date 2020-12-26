@@ -1,9 +1,10 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
-	"tara/services"
+	"tara/api/services"
+
+	"github.com/gin-gonic/gin"
 )
 
 func InitRoute() *gin.Engine {

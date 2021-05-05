@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"tara/api/config"
 	"tara/api/db"
-	"tara/api/routes"
+	"tara/api/router"
 )
 
 // Run start RESTful API service
@@ -30,7 +30,7 @@ func Run() {
 	}
 	defer mongoClient.Disconnect(context.TODO())
 
-	router := routes.InitRoute()
+	router := router.Init()
 
 	router.Run()
 }

@@ -24,7 +24,7 @@ curl -XGET http://localhost:8080/
 curl -XPOST localhost:8080/api/v1/users/ -H 'Content-Type: application/json' -d '{"email": "a@tara.com", "phone": "123456", "password": "root"}' 
 
 # get all users
-curl -X GET localhost:8080/api/v1/users/
+curl -X GET localhost:8080/api/v1/users
 
 # get single user
 curl -X GET localhost:8080/api/v1/users/1

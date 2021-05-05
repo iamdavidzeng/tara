@@ -1,4 +1,4 @@
-
+.PHONY: test build
 ifdef CIRCLE_SHA1
 TAG ?= $(CIRCLE_SHA1)
 else
@@ -18,7 +18,7 @@ test:
 # docker
 
 build:
-	docker build -t $(PROJECT_NAME):$(TAG) .
+	docker build -f build/Dockerfile -t $(PROJECT_NAME):$(TAG) .
 
 docker-login:
 	echo $$DOCKER_PASSWORD | docker login --username=$(DOCKER_USERNAME) --password-stdin

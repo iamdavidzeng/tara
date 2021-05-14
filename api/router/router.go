@@ -2,9 +2,9 @@ package router
 
 import (
 	"net/http"
-	"tara/api/services"
 
 	"github.com/gin-gonic/gin"
+	"github.com/iamdavidzeng/tara/api/services"
 )
 
 func Init() *gin.Engine {
@@ -15,7 +15,6 @@ func Init() *gin.Engine {
 	})
 
 	userAPI := router.Group("/api/v1/users")
-
 	{
 		userAPI.GET("", services.GetUsers)
 		userAPI.GET("/:id", services.GetUser)

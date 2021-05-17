@@ -8,14 +8,22 @@ import (
 )
 
 type Config struct {
-	DB *DB
+	DB  DB  `mapstructure:"DB"`
+	Web Web `mapstructure:"WEB"`
 }
 
-type DB struct {
-	URL string `mapstructure:"DB_URL"`
-}
+type (
+	DB struct {
+		DSN string `mapstructure:"DSN"`
+	}
 
-var Cfg *Config
+	Web struct {
+		Address string `mapstructure:"ADDRESS"`
+		Port    string `mapstructure:"PORT"`
+	}
+)
+
+var Cfg *Config = &Config{}
 
 func (c *Config) Init() error {
 	viper.SetConfigName("config")
@@ -30,7 +38,7 @@ func (c *Config) Init() error {
 		viper.Set(key, parse(viper.GetString(key)))
 	}
 
-	if err := viper.Unmarshal(c); err != nil {
+	if err := viper.Unmarshal(&c); err != nil {
 		return err
 	}
 	return nil

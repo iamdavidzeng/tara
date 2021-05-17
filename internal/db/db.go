@@ -11,10 +11,10 @@ type Database struct {
 	Storage *gorm.DB
 }
 
-var D *Database
+var D *Database = &Database{}
 
 func (db *Database) Init() error {
-	conn, err := gorm.Open(mysql.Open(config.Cfg.DB.URL), &gorm.Config{})
+	conn, err := gorm.Open(mysql.Open(config.Cfg.DB.DSN), &gorm.Config{})
 	if err != nil {
 		return err
 	}

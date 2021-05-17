@@ -12,15 +12,14 @@ import (
 func Run() {
 	// Init config
 	if err := config.Cfg.Init(); err != nil {
-		fmt.Printf("Initiate config failed: %v\n", err)
+		panic(fmt.Errorf("failed to load config: %s", err))
 	}
 
 	// Init mysql connection
 	if err := db.D.Init(); err != nil {
-		fmt.Printf("Fail to onnect database: %v\n", err)
+		panic(fmt.Errorf("failed to connect mysql: %s", err))
 	}
 
 	router := router.Init()
-
-	router.Run()
+	router.Run(fmt.Sprintf("%v:%v", config.Cfg.Web.Address, config.Cfg.Web.Port))
 }

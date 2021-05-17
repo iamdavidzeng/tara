@@ -36,11 +36,11 @@ func Get(c *gin.Context) {
 
 func List(c *gin.Context) {
 	var posts []models.Posts
-	var data []schemas.PostSchema
+	var data []schemas.PostSchema = []schemas.PostSchema{}
 
 	db.D.Storage.Find(&posts)
 	if len(posts) <= 0 {
-		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusUnauthorized, "data": "Post Not Found!"})
+		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": data})
 		return
 	}
 

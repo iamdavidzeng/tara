@@ -1,3 +1,6 @@
-DBURI: ${DB_USER:root}:${DB_PASS:}@tcp(${DB_SERVER:localhost}:${DB_PORT:3306})/${DB_NAME:demo}?charset=utf8&parseTime=true
+DB:
+  DSN: ${DB_USER:root}:${DB_PASS:}@tcp(${DB_SERVER:127.0.0.1}:${DB_PORT:3306})/${DB_NAME:demo}?charset=utf8&parseTime=true
 
-MONGO_URI: "mongodb://${MONGO_SERVER:localhost}:${MONGO_PORT:27017}"
+WEB:
+  ADDRESS: ${WEB_ADDRESS:localhost}
+  PORT: ${WEB_PORT:8000}

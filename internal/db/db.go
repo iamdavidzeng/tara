@@ -2,7 +2,7 @@ package db
 
 import (
 	"github.com/iamdavidzeng/tara/api/models"
-	"github.com/iamdavidzeng/tara/pkg/config"
+	"github.com/iamdavidzeng/tara/internal/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

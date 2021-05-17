@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/iamdavidzeng/tara/api/router"
+	"github.com/iamdavidzeng/tara/internal/config"
 	"github.com/iamdavidzeng/tara/internal/db"
-	"github.com/iamdavidzeng/tara/pkg/config"
 )
 
 // Run start RESTful API service

@@ -13,7 +13,7 @@ type (
 	}
 
 	PostSchema struct {
-		ID        int       `json:"id"`
+		ID        uint      `json:"id"`
 		UserID    int       `json:"user_id"`
 		Title     string    `json:"title"`
 		Content   string    `json:"content"`

@@ -1,7 +1,7 @@
 package main
 
-import "tara/api/server"
+import "github.com/iamdavidzeng/tara/api"
 
 func main() {
-	server.Run()
+	api.Run()
 }

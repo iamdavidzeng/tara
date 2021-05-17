@@ -4,7 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/iamdavidzeng/tara/api/services"
+	"github.com/iamdavidzeng/tara/api/services/posts"
+	"github.com/iamdavidzeng/tara/api/services/users"
 )
 
 func Init() *gin.Engine {
@@ -16,20 +17,20 @@ func Init() *gin.Engine {
 
 	userAPI := router.Group("/api/v1/users")
 	{
-		userAPI.GET("", services.GetUsers)
-		userAPI.GET("/:id", services.GetUser)
-		userAPI.POST("", services.CreateUser)
-		userAPI.POST("/:id", services.UpdateUser)
-		userAPI.DELETE("/:id", services.DeleteUser)
+		userAPI.GET("", users.List)
+		userAPI.GET("/:id", users.Get)
+		userAPI.POST("", users.New)
+		userAPI.POST("/:id", users.Update)
+		userAPI.DELETE("/:id", users.Delete)
 	}
 
 	postAPI := router.Group("/api/v1/posts")
 	{
-		postAPI.GET("", services.GetPosts)
-		postAPI.GET("/:id", services.GetPost)
-		postAPI.POST("", services.CreatePost)
-		postAPI.POST("/:id", services.UpdatePost)
-		postAPI.DELETE("/:id", services.DeletePost)
+		postAPI.GET("", posts.List)
+		postAPI.GET("/:id", posts.Get)
+		postAPI.POST("", posts.New)
+		postAPI.POST("/:id", posts.Update)
+		postAPI.DELETE("/:id", posts.Delete)
 	}
 
 	return router

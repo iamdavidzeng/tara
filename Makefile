@@ -15,8 +15,10 @@ run:
 test:
 	go test -v -race ./...
 
-# docker
+tidy:
+	go mod tidy
 
+# docker
 build:
 	docker build -f build/Dockerfile -t $(PROJECT_NAME):$(TAG) .
 

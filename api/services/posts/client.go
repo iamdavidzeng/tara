@@ -4,79 +4,77 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/iamdavidzeng/tara/api/models"
-	"github.com/iamdavidzeng/tara/api/schemas"
+	"github.com/iamdavidzeng/tara/api/services"
 	"github.com/iamdavidzeng/tara/internal/db"
 )
 
-func New(c *gin.Context) {
-	var data schemas.PostSchema
-	c.BindJSON(&data)
+type Posts struct {
+	services.GormBase
+	UserID    int    `json:"user_id"`
+	Title     string `json:"title"`
+	Content   string `json:"content"`
+	Published bool   `json:"published,omitempty"`
+}
 
-	post := models.Posts{UserID: data.UserID, Title: data.Title, Content: data.Content, Published: data.Published}
-	db.D.Storage.Create(&post)
+var PostOperator *Posts = &Posts{}
+
+func (p Posts) New(c *gin.Context) {
+	c.BindJSON(&p)
+
+	db.D.Storage.Create(&p)
 
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": "Create successfully!"})
 }
 
-func Get(c *gin.Context) {
-	var post models.Posts
-	postID := c.Param("id")
+func (p Posts) Get(c *gin.Context) {
+	id := c.Param("id")
 
-	db.D.Storage.First(&post, postID)
+	db.D.Storage.First(&p, id)
 
-	if post.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "data": "Post Not Found!"})
+	if p.ID == 0 {
+		c.JSON(http.StatusOK, gin.H{"status": http.StatusNotFound, "data": "Post Not Found!"})
 		return
 	}
 
-	data := schemas.PostSchema{ID: post.ID, Title: post.Title, Content: post.Content}
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": data})
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": p})
 }
 
-func List(c *gin.Context) {
-	var posts []models.Posts
-	var data []schemas.PostSchema = []schemas.PostSchema{}
+func (p Posts) List(c *gin.Context) {
+	posts := []Posts{}
 
 	db.D.Storage.Find(&posts)
 	if len(posts) <= 0 {
-		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": data})
+		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": posts})
 		return
 	}
 
-	for _, post := range posts {
-		data = append(data, schemas.PostSchema{ID: post.ID, Title: post.Title, Content: post.Content})
-	}
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": data})
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": posts})
 }
 
-func Update(c *gin.Context) {
-	var post models.Posts
-	postID := c.Param("id")
+func (p Posts) Update(c *gin.Context) {
+	id := c.Param("id")
 
-	db.D.Storage.First(&post, postID)
-	if post.ID == 0 {
+	db.D.Storage.First(&p, id)
+	if p.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "data": "Post Not Found!"})
 		return
 	}
 
-	var data schemas.PostSchema
-	c.BindJSON(&data)
+	c.BindJSON(&p)
 
-	db.D.Storage.Model(&post).Updates(data)
+	db.D.Storage.Model(&p).Updates(p)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": "Update successfully!"})
 }
 
-func Delete(c *gin.Context) {
-	var post models.Posts
-	postID := c.Param("id")
+func (p Posts) Del(c *gin.Context) {
+	id := c.Param("id")
 
-	db.D.Storage.First(&post, postID)
-	if post.ID == 0 {
+	db.D.Storage.First(&p, id)
+	if p.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "data": "Post Not Found!"})
 		return
 	}
 
-	db.D.Storage.Delete(&post)
+	db.D.Storage.Delete(&p)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": "Delete successfully!"})
 }

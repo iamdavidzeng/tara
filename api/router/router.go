@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/iamdavidzeng/tara/api/services"
 	"github.com/iamdavidzeng/tara/api/services/posts"
 	"github.com/iamdavidzeng/tara/api/services/users"
 )
@@ -15,23 +16,19 @@ func Init() *gin.Engine {
 		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": "hello, world!"})
 	})
 
-	userAPI := router.Group("/api/v1/users")
-	{
-		userAPI.GET("", users.List)
-		userAPI.GET("/:id", users.Get)
-		userAPI.POST("", users.New)
-		userAPI.POST("/:id", users.Update)
-		userAPI.DELETE("/:id", users.Delete)
-	}
+	userGroup := router.Group("/api/v1/users")
+	registerRoute(users.UserOperator, userGroup)
 
-	postAPI := router.Group("/api/v1/posts")
-	{
-		postAPI.GET("", posts.List)
-		postAPI.GET("/:id", posts.Get)
-		postAPI.POST("", posts.New)
-		postAPI.POST("/:id", posts.Update)
-		postAPI.DELETE("/:id", posts.Delete)
-	}
+	postGroup := router.Group("/api/v1/posts")
+	registerRoute(posts.PostOperator, postGroup)
 
 	return router
+}
+
+func registerRoute(m services.ModelOperator, r *gin.RouterGroup) {
+	r.GET("", m.List)
+	r.GET("/:id", m.Get)
+	r.POST("", m.New)
+	r.POST("/:id", m.Update)
+	r.DELETE("/:id", m.Del)
 }

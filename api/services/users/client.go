@@ -4,79 +4,76 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/iamdavidzeng/tara/api/models"
-	"github.com/iamdavidzeng/tara/api/schemas"
+	"github.com/iamdavidzeng/tara/api/services"
 	"github.com/iamdavidzeng/tara/internal/db"
 )
 
-func New(c *gin.Context) {
-	var data schemas.UserSchema
-	c.BindJSON(&data)
+type Users struct {
+	services.GormBase
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	Password string `json:"-"`
+}
 
-	_user := models.Users{Email: data.Email, Phone: data.Phone, Password: data.Password}
-	db.D.Storage.Create(&_user)
+var UserOperator *Users = &Users{}
+
+func (u Users) New(c *gin.Context) {
+	c.BindJSON(&u)
+
+	db.D.Storage.Create(&u)
 
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": "Create successfully!"})
 }
 
-func Get(c *gin.Context) {
-	var user models.Users
-	userID := c.Param("id")
+func (u Users) Get(c *gin.Context) {
+	id := c.Param("id")
 
-	db.D.Storage.First(&user, userID)
+	db.D.Storage.First(&u, id)
 
-	if user.ID == 0 {
+	if u.ID == 0 {
 		c.JSON(http.StatusOK, gin.H{"status": http.StatusNotFound, "data": "User Not Found!"})
 		return
 	}
 
-	_user := schemas.UserSchema{ID: user.ID, Email: user.Email, Phone: user.Phone, Password: user.Password}
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": _user})
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": u})
 }
 
-func List(c *gin.Context) {
-	var users []models.Users
-	var data []schemas.UserSchema = []schemas.UserSchema{}
+func (u Users) List(c *gin.Context) {
+	users := []Users{}
 
 	db.D.Storage.Find(&users)
 	if len(users) <= 0 {
-		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusOK, "data": data})
+		c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": users})
 		return
 	}
 
-	for _, user := range users {
-		data = append(data, schemas.UserSchema{ID: user.ID, Email: user.Email, Phone: user.Phone, Password: user.Password})
-	}
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": data})
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": users})
 }
 
-func Update(c *gin.Context) {
-	var user models.Users
-	userID := c.Param("id")
+func (u Users) Update(c *gin.Context) {
+	id := c.Param("id")
 
-	db.D.Storage.First(&user, userID)
-	if user.ID == 0 {
+	db.D.Storage.First(&u, id)
+	if u.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "data": "User Not Found!"})
 		return
 	}
 
-	var data schemas.UserSchema
-	c.BindJSON(&data)
+	c.BindJSON(&u)
 
-	db.D.Storage.Model(&user).Update("email", data.Email)
+	db.D.Storage.Model(&u).Updates(u)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": "Update successfully!"})
 }
 
-func Delete(c *gin.Context) {
-	var user models.Users
-	userID := c.Param("id")
+func (u Users) Del(c *gin.Context) {
+	id := c.Param("id")
 
-	db.D.Storage.First(&user, userID)
-	if user.ID == 0 {
+	db.D.Storage.First(&u, id)
+	if u.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "data": "User Not Found!"})
 		return
 	}
 
-	db.D.Storage.Delete(&user)
+	db.D.Storage.Delete(&u)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": "Delete successfully!"})
 }

@@ -1,17 +1,17 @@
 package models
 
-import "gorm.io/gorm"
+import "github.com/iamdavidzeng/tara/api/services"
 
 type (
 	Users struct {
-		gorm.Model
+		services.GormBase
 		Email    string
 		Phone    string
 		Password string
 	}
 
 	Posts struct {
-		gorm.Model
+		services.GormBase
 		UserID    int
 		Title     string
 		Content   string
